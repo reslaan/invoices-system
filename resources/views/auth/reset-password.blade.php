@@ -1,48 +1,50 @@
 <x-guest-layout>
-    <x-auth-card>
+    <x-jet-authentication-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            <x-jet-authentication-card-logo />
         </x-slot>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        <div class="card-body">
 
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
+            <x-jet-validation-errors class="mb-3" />
 
-            <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <form method="POST" action="/reset-password">
+                @csrf
 
-            <!-- Email Address -->
-            <div>
-                <x-input-label for="email" :value="__('Email')" />
+                <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
-            </div>
+                <div class="mb-3">
+                    <x-jet-label value="{{ __('Email') }}" />
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-input-label for="password" :value="__('Password')" />
+                    <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email"
+                                 :value="old('email', $request->email)" required autofocus />
+                    <x-jet-input-error for="email"></x-jet-input-error>
+                </div>
 
-                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required />
-            </div>
+                <div class="mb-3">
+                    <x-jet-label value="{{ __('Password') }}" />
 
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <x-jet-input class="{{ $errors->has('password') ? 'is-invalid' : '' }}" type="password"
+                                 name="password" required autocomplete="new-password" />
+                    <x-jet-input-error for="password"></x-jet-input-error>
+                </div>
 
-                <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password_confirmation" required />
-            </div>
+                <div class="mb-3">
+                    <x-jet-label value="{{ __('Confirm Password') }}" />
 
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button>
-                    {{ __('Reset Password') }}
-                </x-primary-button>
-            </div>
-        </form>
-    </x-auth-card>
+                    <x-jet-input class="{{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" type="password"
+                                 name="password_confirmation" required autocomplete="new-password" />
+                    <x-jet-input-error for="password_confirmation"></x-jet-input-error>
+                </div>
+
+                <div class="mb-0">
+                    <div class="d-flex justify-content-end">
+                        <x-jet-button>
+                            {{ __('Reset Password') }}
+                        </x-jet-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </x-jet-authentication-card>
 </x-guest-layout>

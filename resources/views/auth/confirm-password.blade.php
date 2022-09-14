@@ -1,36 +1,31 @@
 <x-guest-layout>
-    <x-auth-card>
+    <x-jet-authentication-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            <x-jet-authentication-card-logo />
         </x-slot>
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+        <div class="card-body">
+
+            <div class="mb-3 text-sm text-muted">
+                {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+            </div>
+
+            <x-jet-validation-errors class="mb-2" />
+
+            <form method="POST" action="{{ route('password.confirm') }}">
+                @csrf
+
+                <div>
+                    <x-jet-label for="password" value="{{ __('Password') }}" />
+                    <x-jet-input id="password" type="password" name="password" required autocomplete="current-password" autofocus />
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <x-jet-button class="ms-4">
+                        {{ __('Confirm') }}
+                    </x-jet-button>
+                </div>
+            </form>
         </div>
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('password.confirm') }}">
-            @csrf
-
-            <!-- Password -->
-            <div>
-                <x-input-label for="password" :value="__('Password')" />
-
-                <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-            </div>
-
-            <div class="flex justify-end mt-4">
-                <x-primary-button>
-                    {{ __('Confirm') }}
-                </x-primary-button>
-            </div>
-        </form>
-    </x-auth-card>
+    </x-jet-authentication-card>
 </x-guest-layout>
